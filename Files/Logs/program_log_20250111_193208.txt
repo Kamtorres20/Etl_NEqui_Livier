@@ -1,0 +1,14 @@
+2025-01-11 19:32:08,495 - INFO - Sistema de logs configurado.
+2025-01-11 19:32:08,495 - INFO - Iniciando extracción...
+2025-01-11 19:32:09,199 - INFO - Extracción completada.
+2025-01-11 19:32:09,199 - INFO - Iniciando transformación...
+2025-01-11 19:32:09,199 - INFO - IDs duplicados encontrados:
+2025-01-11 19:32:09,199 - INFO - 
+ cart_id  user_id     total  discounted_total  total_products  total_quantity
+       1       33 103774.85          89686.65               4              15
+       1      108  16775.87          14144.30               5              13
+2025-01-11 19:32:09,215 - INFO - Guardado CSV Local...
+2025-01-11 19:32:09,227 - INFO - cargando CSV en S3
+2025-01-11 19:32:10,508 - INFO - Transformación completada.
+2025-01-11 19:32:10,508 - INFO - Iniciando carga...
+2025-01-11 19:32:40,412 - INFO - Carga completada.

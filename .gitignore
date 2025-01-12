@@ -1,0 +1,10 @@
+# Archivos de resultados de unittest
+*.xml
+*.html
+*.json
+*.log
+
+# Carpetas comunes generadas por unittest
+test-reports/
+tests/__pycache__/
+*.pytest_cache/
