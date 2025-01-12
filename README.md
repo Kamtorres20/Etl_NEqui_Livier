@@ -11,7 +11,6 @@ Este proyecto implementa un proceso ETL (Extract, Transform, Load) que toma dato
 - [Pruebas](#pruebas)
 - [Personalización](#personalización)
 - [Contribuciones](#contribuciones)
-- [Licencia](#licencia)
 
 ---
 
@@ -56,14 +55,31 @@ Este proyecto implementa un proceso ETL (Extract, Transform, Load) que toma dato
 
 4. Configura tu tabla de Redshift:
    ```sql
-   CREATE TABLE sales_data (
-      id INT,                           -- Identificador único de la venta
-      total NUMERIC(10, 2),             -- Total sin descuentos
-      discounted_total NUMERIC(10, 2),  -- Total con descuentos aplicados
-      user_id INT,                      -- Identificador del usuario que realizó la compra
-      total_products INT,               -- Número total de productos distintos en la venta
-      total_quantity INT                -- Cantidad total de productos comprados
+   CREATE TABLE carritos (
+      cart_id INTEGER PRIMARY KEY,
+      user_id INTEGER REFERENCES usuarios(user_id),
+      total DECIMAL(10,2) NOT NULL,
+      discounted_total DECIMAL(10,2),
+      total_products INTEGER,
+      total_quantity INTEGER
    );
+
+   CREATE TABLE productos (
+    product_id INTEGER PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    thumbnail VARCHAR(255)
+   );
+
+   CREATE TABLE carritos_productos (
+    cart_id INTEGER REFERENCES carritos(cart_id),
+    product_id INTEGER REFERENCES productos(product_id),
+    quantity INTEGER,
+    total DECIMAL(10,2),
+    discounted_total DECIMAL(10,2),
+    PRIMARY KEY (cart_id, product_id)
+   );
+
    ```
 
 ---
@@ -73,15 +89,14 @@ Este proyecto implementa un proceso ETL (Extract, Transform, Load) que toma dato
 ```plaintext
 etl_project/
 ├── etl/                      # Código principal del ETL
-│   ├── __init__.py           # Archivo para tratar la carpeta como un módulo
 │   ├── config.py             # Configuración de AWS y Redshift
+│   ├── log.py                # Configuración de log interno
 │   ├── s3_utils.py           # Funciones para interactuar con S3
 │   ├── transform.py          # Lógica de transformación de datos
 │   ├── redshift_utils.py     # Funciones para interactuar con Redshift
-├── scripts/                  # Scripts ejecutables
-│   ├── main.py               # Script principal del ETL
 ├── tests/                    # Pruebas unitarias
 │   ├── test_etl.py           # Pruebas del proceso ETL
+├── main.py                   # Script principal del ETL
 ├── requirements.txt          # Dependencias del proyecto
 └── README.md                 # Documentación del proyecto
 ```
@@ -95,7 +110,7 @@ etl_project/
    python scripts/main.py
    ```
 
-2. Personaliza los parámetros de entrada y salida modificando estas variables en `scripts/main.py`:
+2. Personaliza los parámetros de entrada y salida modificando estas variables en `main.py`:
    ```python
    BUCKET_NAME = 'tu_bucket_name'
    INPUT_KEY = 'ruta_al_archivo.json'
